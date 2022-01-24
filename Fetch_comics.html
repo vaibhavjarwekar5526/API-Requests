@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: grid;
+            grid-template-columns: repeat(3, 30%);
+            justify-content: center;
+            column-gap: 2%;
+            row-gap: 5%;
+        }
+        #container div{
+            border: 2px solid black;
+            text-align: center;
+            padding-top: 2vh;
+        }
+        @media screen and (max-width: 760px){
+            #container{
+                grid-template-columns: repeat(2, 45%);
+            }
+        }
+        @media screen and (max-width: 420px){
+            #container{
+                grid-template-columns: repeat(1, 90%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+
+    </div>
+</body>
+</html>
+<script>
+    var url = "https://reqres.in/api/users"
+
+    fetch(url)
+    .then(function(res){
+        console.log('res:', res)
+
+        return res.json()
+    })
+    .then(function(final_result){
+        var final_result = final_result.data
+        console.log('final_result', final_result)
+
+        fetchComics(final_result)
+    })
+    .catch(function(err){
+        console.log('err:', err)
+    })
+
+    var container = document.getElementById('container');
+
+    function fetchComics(data){
+        data.forEach((el)=>{
+            var div = document.createElement('div');
+
+            var image = document.createElement('img')
+            image.src= el.avatar;
+
+            var name = document.createElement('p')
+            name.textContent = `${el.first_name} ${el.last_name}`
+
+            var email = document.createElement('p')
+            email.textContent = `${el.email}`
+
+            div.append(image, name, email)
+
+            container.append(div);
+            
+        });
+
+    }
+</script>
